@@ -18,7 +18,7 @@ public class SecondLawScene {
     private double mass = 1.0;
     private double force = 0.0;
     private double velocity = 0.0;
-    private double radius = 200; // Poloměr kruhu
+    private double radius = 200;
     private double angle = 0;
     private AnimationTimer animation;
     private long startTime;
@@ -75,12 +75,12 @@ public class SecondLawScene {
             public void handle(long now) {
                 if (now - startTime > 5_000_000_000L) {
                     stop();
-                    velocity = 0.0; // Resetování rychlosti po zastavení animace
+                    velocity = 0.0;
                     return;
                 }
                 double acceleration = force / mass;
                 velocity += acceleration * 0.1;
-                angle += velocity * 0.01; // Rotace po kruhu
+                angle += velocity * 0.01;
                 double x = 400 + radius * Math.cos(angle);
                 double y = 200 + radius * Math.sin(angle);
 
@@ -94,7 +94,7 @@ public class SecondLawScene {
         simulateButton.setStyle("-fx-background-color: #1E90FF; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10px;");
         simulateButton.setOnAction(e -> {
             startTime = System.nanoTime();
-            velocity = 0.0; // Resetování rychlosti před spuštěním nové simulace
+            velocity = 0.0;
             animation.start();
         });
 

@@ -44,11 +44,11 @@ public class SecondLawGraf extends JFrame {
         controlPanel.add(stopButton);
         add(controlPanel, BorderLayout.NORTH);
 
-        // Jen grafy pro rychlost a polohu
+
         JFreeChart velocityChart = ChartFactory.createXYLineChart("Rychlost vs. Čas", "Čas (s)", "Rychlost (m/s)", new XYSeriesCollection(velocitySeries), PlotOrientation.VERTICAL, true, true, false);
         JFreeChart positionChart = ChartFactory.createXYLineChart("Poloha vs. Čas", "Čas (s)", "Poloha (m)", new XYSeriesCollection(positionSeries), PlotOrientation.VERTICAL, true, true, false);
 
-        JPanel chartPanel = new JPanel(new GridLayout(2, 1)); // Změna z 3 na 2, protože graf pro sílu již není
+        JPanel chartPanel = new JPanel(new GridLayout(2, 1));
         chartPanel.add(new ChartPanel(velocityChart));
         chartPanel.add(new ChartPanel(positionChart));
         add(chartPanel, BorderLayout.CENTER);
@@ -77,23 +77,23 @@ public class SecondLawGraf extends JFrame {
                 time = 0.0;
                 velocity = 0.0;
                 position = 0.0;
-                timer.start(); // Spuštění časovače pro generování grafů
+                timer.start();
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(null, "Zadejte platná čísla!");
             }
         });
 
-        // Funkce pro tlačítko Zastavit
+
         stopButton.addActionListener(e -> {
-            timer.stop();  // Zastaví časovač
+            timer.stop();
         });
 
-        // Přidání tlačítka Zpět
-        backButton.addActionListener(e -> {
-            timer.stop();  // Zastaví simulaci
-            dispose();  // Zavře okno
 
-            // Otevře hlavní menu (MainMenuApp)
+        backButton.addActionListener(e -> {
+            timer.stop();
+            dispose();
+
+
             SwingUtilities.invokeLater(() -> new MainMenuApp().showWindow());
         });
 

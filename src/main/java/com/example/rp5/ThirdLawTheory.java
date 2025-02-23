@@ -19,56 +19,55 @@ import javafx.stage.Stage;
 
 
     public void show(Stage stage) {
-        // Vytvoření scény pro třetí Newtonův zákon
+
         VBox layout = new VBox(20);
         layout.setAlignment(Pos.CENTER);
         layout.setStyle("-fx-padding: 20;");
 
-        // Gradientní pozadí
+
         LinearGradient gradient = new LinearGradient(0, 0, 0, 1, true, null,
                 new Stop(0, Color.LIGHTBLUE),
                 new Stop(1, Color.DARKBLUE));
         layout.setBackground(new Background(new BackgroundFill(gradient, CornerRadii.EMPTY, null)));
 
-        // Název aplikace
+
         Text title = new Text("Třetí Newtonův Zákon");
         title.setFont(Font.font("Arial", 36));
         title.setFill(Color.WHITE);
         title.setEffect(new DropShadow(10, Color.BLACK));
 
-        // Text s vysvětlením třetího zákona
+
         Text explanation = new Text("Každá akce vyvolá stejně velkou opačně orientovanou reakci.");
         explanation.setFont(Font.font("Arial", 16));
         explanation.setFill(Color.WHITE);
 
-        // Tlačítka pro další akce
+
         Button examplesButton = createStyledButton("Příklady");
         Button simulationButton = createStyledButton("Simulace");
         Button backButton = createStyledButton("Zpět");
 
-        // Akce pro tlačítko "Simulace" - přechod na simulaci
+
         simulationButton.setOnAction(e -> new ThirdLawScene().show(stage));
 
-        // Akce pro tlačítko "Příklady"
+
         //examplesButton.setOnAction(e -> new FirstLawScene().show(stage));
 
-        // Akce pro tlačítko "Zpět" - vrací zpět na hlavní menu
+
         backButton.setOnAction(e -> new MainMenuApp().start(stage));
 
-        // Přidání všech komponent do rozvržení
+
         layout.getChildren().addAll(title, explanation, examplesButton, simulationButton, backButton);
 
-        // Vytvoření scény pro okno
+
         Scene scene = new Scene(layout, 800, 600);
 
-        // Nastavení scény do okna
+
         stage.setTitle("Newton's Laws - Třetí Zákon");
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
     }
 
-    // Pomocná metoda pro vytvoření stylovaného tlačítka
     private Button createStyledButton(String text) {
         Button button = new Button(text);
         button.setFont(Font.font("Arial", 16));

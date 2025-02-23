@@ -17,12 +17,12 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class MainMenuApp extends Application {
-    private Stage primaryStage; // Uložení Stage pro znovuotevření menu
+    private Stage primaryStage;
 
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
-        showWindow(); // Zavolá hlavní menu
+        showWindow();
     }
 
     public void showWindow() {

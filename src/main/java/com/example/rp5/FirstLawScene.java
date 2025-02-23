@@ -11,32 +11,29 @@ public class FirstLawScene extends JPanel implements ActionListener {
     private static final int HEIGHT = 400;
 
     private double x = WIDTH / 2;
-    private double y = HEIGHT / 2; // Nastavení koule na střed obrazovky
+    private double y = HEIGHT / 2;
     private double velocityX = 0;
     private double velocityY = 0;
 
-    private double acceleration = 0.5;
-    private double gravity = 0.1;
+    private final double acceleration = 0.5;
     private double friction = 0.02;
     private boolean frictionEnabled = true;
     private boolean gravityEnabled = false;
     private boolean bouncingEnabled = false;
 
-    private Timer timer;
-
-    private BufferedImage backgroundImage;
+    private final BufferedImage backgroundImage;
 
     public FirstLawScene() {
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
         setBackground(Color.BLACK);
 
-        // Vytvoření textury pozadí
+
         backgroundImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = backgroundImage.createGraphics();
         createBackground(g2d);
         g2d.dispose();
 
-        timer = new Timer(1000 / 60, this);
+        Timer timer = new Timer(1000 / 60, this);
         timer.start();
 
         addKeyListener(new KeyAdapter() {
@@ -62,9 +59,9 @@ public class FirstLawScene extends JPanel implements ActionListener {
                 } else if (e.getKeyCode() == KeyEvent.VK_B) {
                     bouncingEnabled = !bouncingEnabled;
                 } else if (e.getKeyCode() == KeyEvent.VK_UP) {
-                    velocityY -= 2; // Skok nahoru
+                    velocityY -= 2;
                 } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-                    velocityY += 2; // Pohyb dolů
+                    velocityY += 2;
                 }
             }
         });
@@ -74,18 +71,19 @@ public class FirstLawScene extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        // Aktualizace pozice koule podle rychlosti
+
         x += velocityX;
 
         if (gravityEnabled) {
-            velocityY += gravity;  // Pokud je gravitace zapnutá, zvyšujeme rychlost
+            double gravity = 0.1;
+            velocityY += gravity;
         }
 
-        y += velocityY;  // Aktualizace vertikální pozice koule
+        y += velocityY;
 
         if (frictionEnabled && friction > 0) {
             if (velocityX > 0) {
-                velocityX -= friction;  // Snižujeme rychlost podle tření
+                velocityX -= friction;
                 if (velocityX < 0) velocityX = 0;
             } else if (velocityX < 0) {
                 velocityX += friction;
@@ -93,52 +91,49 @@ public class FirstLawScene extends JPanel implements ActionListener {
             }
         }
 
-        // Když koule opustí pravý okraj obrazovky, vrátí se na levý
+
         if (x > WIDTH) x = 0;
         if (x < 0) x = WIDTH;
 
-        // Kontrola, zda koule spadne na podlahu
+
         if (y > HEIGHT - 45) {
             y = HEIGHT - 45;
             velocityY = 0;
             if (bouncingEnabled) {
-                velocityY = -5;  // Koule odrazí, pokud je povoleno odskakování
+                velocityY = -5;
             }
         }
 
-        // Pokud koule vyletí nahoru, zastavíme ji
+
         if (y < 0) {
             y = 0;
             velocityY = 0;
         }
 
-        repaint();  // Počkáme na vykreslení nových hodnot
+        repaint();
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        // Kreslení pozadí
+
         g.drawImage(backgroundImage, 0, 0, null);
 
-        // Vykreslení koule
-        g.setColor(new Color(30, 144, 255));  // Nastavení barvy koule na krásně modrou
-        g.fillOval((int) x, (int) y, 40, 40);  // Koule je větší, aby byla více výrazná
 
-        // Vykreslení efektu stínu koule
-        g.setColor(new Color(0, 0, 0, 120));  // Poloprůhledný černý stín
-        g.fillOval((int) (x + 5), (int) (y + 5), 40, 40);  // Stín je mírně posunutý
+        g.setColor(new Color(30, 144, 255));
+        g.fillOval((int) x, (int) y, 40, 40);
 
-        // Zobrazení informací o rychlostech a dalších parametrech
+
+        g.setColor(new Color(0, 0, 0, 120));
+        g.fillOval((int) (x + 5), (int) (y + 5), 40, 40);
+
+
         g.setColor(Color.WHITE);
         g.setFont(new Font("Arial", Font.BOLD, 14));
         g.drawString("Rychlost X: " + String.format("%.2f", velocityX) + " m/s", 20, 20);
         g.drawString("Rychlost Y: " + String.format("%.2f", velocityY) + " m/s", 20, 40);
-
-        // Zobrazení tření a stavu
-        g.drawString("Tření: " + String.format("%.3f", friction) + " m/s² (" + (frictionEnabled ? "Zapnuto" : "Vypnuto") + ")" +" (T -> Vypnutí/zapnutí)", 20, 60);
-
+        g.drawString("Tření: " + String.format("%.3f", friction) + " m/s² (" + (frictionEnabled ? "Zapnuto" : "Vypnuto") + ")" + " (T -> Vypnutí/zapnutí)", 20, 60);
         g.drawString("Gravitace: " + (gravityEnabled ? "Zapnutá (G pro vypnutí)" : "Vypnutá (G pro zapnutí)"), 20, 80);
         g.drawString("Odskočení: " + (bouncingEnabled ? "Zapnuté (B pro vypnutí)" : "Vypnuté (B pro zapnutí)"), 20, 100);
         g.drawString("Šipky -> Přidej rychlost | Space -> Stop", 20, 120);
@@ -146,14 +141,13 @@ public class FirstLawScene extends JPanel implements ActionListener {
         g.drawString("Šipka nahoru -> Skok nahoru | Šipka dolů -> Pohyb dolů", 20, 160);
     }
 
-    // Funkce pro vytvoření pozadí (např. gradient nebo texturu)
+
     private void createBackground(Graphics2D g2d) {
-        // Gradient pozadí, který připomíná noční oblohu
+
         GradientPaint gradient = new GradientPaint(0, 0, new Color(0, 0, 30), 0, HEIGHT, new Color(0, 0, 60));
         g2d.setPaint(gradient);
         g2d.fillRect(0, 0, WIDTH, HEIGHT);
 
-        // Přidání hvězd (malé tečky na pozadí)
         g2d.setColor(Color.WHITE);
         for (int i = 0; i < 100; i++) {
             int starX = (int) (Math.random() * WIDTH);
