@@ -13,6 +13,7 @@ import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 public class SecondLawTheory {
@@ -23,24 +24,25 @@ public class SecondLawTheory {
         layout.setAlignment(Pos.CENTER);
         layout.setStyle("-fx-padding: 20;");
 
-
         LinearGradient gradient = new LinearGradient(0, 0, 1, 0, true, null,
                 new Stop(0, Color.LIGHTPINK),
                 new Stop(1, Color.DEEPPINK));
         layout.setBackground(new Background(new BackgroundFill(gradient, CornerRadii.EMPTY, null)));
 
-
         Text title = new Text("Druhý Newtonův Zákon");
         title.setFont(Font.font("Arial", 36));
         title.setFill(Color.WHITE);
         title.setEffect(new DropShadow(10, Color.BLACK));
+        title.setTextAlignment(TextAlignment.CENTER); // Center title
 
-
-        Text explanation = new Text("Zrychlení tělesa je přímo úměrné výsledné síle působící na těleso" +
-                " a nepřímo úměrné jeho hmotnosti, což lze vyjádřit vztahem F = ma.");
-        explanation.setFont(Font.font("Arial", 16));
+        // Explanation Text with wrapping, larger spacing, and better readability
+        Text explanation = new Text("Zrychlení tělesa je přímo úměrné výsledné síle působící na těleso"
+                + " a nepřímo úměrné jeho hmotnosti, což lze vyjádřit vztahem F = ma.");
+        explanation.setFont(Font.font("Verdana", 18));  // More readable font and size
         explanation.setFill(Color.WHITE);
-
+        explanation.setTextAlignment(TextAlignment.CENTER);  // Center the explanation text
+        explanation.setWrappingWidth(700);  // Allow the text to wrap within a set width
+        explanation.setLineSpacing(5);  // More space between lines for better readability
 
         Button examplesButton = createStyledButton("Příklady");
         Button simulationButton = createStyledButton("Simulace");
@@ -49,28 +51,21 @@ public class SecondLawTheory {
 
         simulationButton.setOnAction(e -> new SecondLawScene().show(stage));
 
-
         examplesButton.setOnAction(e -> new MainMenuApp().start(stage));
-
 
         graphButton.setOnAction(e -> new SecondLawGraf().showWindow());
 
-
         backButton.setOnAction(e -> new MainMenuApp().start(stage));
-
 
         layout.getChildren().addAll(title, explanation, examplesButton, simulationButton, graphButton, backButton);
 
-
         Scene scene = new Scene(layout, 800, 600);
-
 
         stage.setTitle("Newton's Laws - Druhý Zákon");
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
     }
-
 
     Button createStyledButton(String text) {
         Button button = new Button(text);
@@ -82,3 +77,4 @@ public class SecondLawTheory {
         return button;
     }
 }
+
