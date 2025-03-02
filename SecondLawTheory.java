@@ -33,16 +33,16 @@ public class SecondLawTheory {
         title.setFont(Font.font("Arial", 36));
         title.setFill(Color.WHITE);
         title.setEffect(new DropShadow(10, Color.BLACK));
-        title.setTextAlignment(TextAlignment.CENTER); // Center title
+        title.setTextAlignment(TextAlignment.CENTER);
 
-        // Explanation Text with wrapping, larger spacing, and better readability
+
         Text explanation = new Text("Zrychlení tělesa je přímo úměrné výsledné síle působící na těleso"
                 + " a nepřímo úměrné jeho hmotnosti, což lze vyjádřit vztahem F = ma.");
-        explanation.setFont(Font.font("Verdana", 18));  // More readable font and size
+        explanation.setFont(Font.font("Verdana", 18));
         explanation.setFill(Color.WHITE);
-        explanation.setTextAlignment(TextAlignment.CENTER);  // Center the explanation text
-        explanation.setWrappingWidth(700);  // Allow the text to wrap within a set width
-        explanation.setLineSpacing(5);  // More space between lines for better readability
+        explanation.setTextAlignment(TextAlignment.CENTER);
+        explanation.setWrappingWidth(700);
+        explanation.setLineSpacing(5);
 
         Button examplesButton = createStyledButton("Příklady");
         Button simulationButton = createStyledButton("Simulace");
@@ -77,4 +77,5 @@ public class SecondLawTheory {
         return button;
     }
 }
+
 
