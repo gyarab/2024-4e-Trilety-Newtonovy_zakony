@@ -2,11 +2,9 @@ package com.example.rp5;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
@@ -103,22 +101,13 @@ public class ThirdLawScene {
                 case T -> isFrictionEnabled = !isFrictionEnabled;
                 case V -> friction = Math.min(0.999, friction + 0.01);
                 case M -> friction = Math.max(0.9, friction - 0.01);
-                case B -> {
-                    stage.setWidth(800);
-                    stage.setHeight(600);
-                    VBox menu = new VBox(20);
-                    menu.setAlignment(Pos.CENTER);
-                    menu.setStyle("-fx-padding: 20;");
-                    new ThirdLawTheory().show(stage);
-                }
+                case B -> new ThirdLawTheory().show(stage);
             }
             updateInfoLabel();
         });
 
         stage.setTitle("Newtonova Srážka");
         stage.setScene(scene);
-        stage.setWidth(WIDTH);
-        stage.setHeight(HEIGHT);
         stage.setResizable(false);
         stage.show();
     }
@@ -144,6 +133,8 @@ public class ThirdLawScene {
 
         if (ball1.getCenterX() - ball1.getRadius() <= 0 || ball1.getCenterX() + ball1.getRadius() >= WIDTH) v1 = -v1;
         if (ball2.getCenterX() - ball2.getRadius() <= 0 || ball2.getCenterX() + ball2.getRadius() >= WIDTH) v2 = -v2;
+
+        updateInfoLabel();
     }
 
     private void resetSimulation() {
@@ -161,10 +152,10 @@ public class ThirdLawScene {
 
     private void updateInfoLabel() {
         infoLabel.setText(String.format("""
-                        Modrá koule - Hmotnost: %.1f kg, Rychlost: %.1f m/s
-                        Červená koule - Hmotnost: %.1f kg, Rychlost: %.1f m/s
-                        Srážka: %s
-                        Tření: %s (%.2f)""",
+            Modrá koule - Hmotnost: %.1f kg, Rychlost: %.1f m/s
+            Červená koule - Hmotnost: %.1f kg, Rychlost: %.1f m/s
+            Srážka: %s
+            Tření: %s (%.2f)""",
                 m1, v1, m2, v2, isElastic ? "Elastická" : "Neelastická", isFrictionEnabled ? "Zapnuto" : "Vypnuto", friction));
     }
 }
