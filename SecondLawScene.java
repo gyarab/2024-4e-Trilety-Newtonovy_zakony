@@ -118,9 +118,9 @@ public class SecondLawScene {
 
         VBox controls = new VBox(15,
                 new Label("Hmotnost (kg):"),
-                massSlider, massValueLabel,
+                massSlider,
                 new Label("Síla (N):"),
-                forceSlider, forceValueLabel,
+                forceSlider,massValueLabel, forceValueLabel,
                 velocityLabel, accelerationLabel, timeLabel,
                 startButton, resetButton, backbutton
         );
