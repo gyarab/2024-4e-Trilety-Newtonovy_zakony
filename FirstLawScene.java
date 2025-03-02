@@ -161,7 +161,7 @@ public class FirstLawScene extends JPanel implements ActionListener {
         JFrame frame = new JFrame("Newtonův první zákon - Interaktivní");
         frame.add(this); // Přidání komponenty (scény) do okna
         frame.pack();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         // Uzamčení velikosti okna
         frame.setResizable(false);  // Zamezení změny velikosti okna
