@@ -58,6 +58,7 @@ public class ThirdLawTheory {
         stage.setTitle("Newton's Laws - Třetí Zákon");
         stage.setScene(scene);
         stage.setResizable(false);
+        stage.centerOnScreen();
         stage.show();
     }
     
