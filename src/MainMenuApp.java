@@ -55,6 +55,7 @@ public class MainMenuApp extends Application {
         primaryStage.setScene(mainMenuScene);
         primaryStage.setTitle("Newtonovy zákony");
         primaryStage.setResizable(false);
+        primaryStage.centerOnScreen();
         primaryStage.show();
     }
 
