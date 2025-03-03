@@ -52,7 +52,7 @@ public class FirstLawTheory {
         Button backButton = createStyledButton("Zpět");
 
         simulationButton.setOnAction(e -> new FirstLawScene().showWindow());
-        examplesButton.setOnAction(e -> new MainMenuApp().start(stage));
+        examplesButton.setOnAction(e -> new FirstLawExamples().show(stage));
         backButton.setOnAction(e -> new MainMenuApp().start(stage));
         
         layout.getChildren().addAll(title, explanation, examplesButton, simulationButton, backButton);
