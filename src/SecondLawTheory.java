@@ -64,6 +64,7 @@ public class SecondLawTheory {
         stage.setTitle("Newton's Laws - Druhý Zákon");
         stage.setScene(scene);
         stage.setResizable(false);
+        stage.centerOnScreen();
         stage.show();
     }
 
