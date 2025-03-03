@@ -1,4 +1,4 @@
-package com.example.Rp5;
+package com.example.rp5;
 
 import javafx.animation.FadeTransition;
 import javafx.geometry.Pos;
