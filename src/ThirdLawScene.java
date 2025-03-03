@@ -109,6 +109,7 @@ public class ThirdLawScene {
         stage.setTitle("Newtonova Srážka");
         stage.setScene(scene);
         stage.setResizable(false);
+        stage.centerOnScreen();
         stage.show();
     }
 
