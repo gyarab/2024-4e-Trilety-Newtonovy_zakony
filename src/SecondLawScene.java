@@ -78,12 +78,16 @@ public class SecondLawScene {
 
 
         Button startButton = createButton("Začít simulaci");
+        Button resetButton = createButton("Resetovat");
+        resetButton.setVisible(false);
+
         startButton.setOnAction(e -> {
             running = true;
             startTime = System.nanoTime();
+            startButton.setVisible(false);
+            resetButton.setVisible(true);
         });
 
-        Button resetButton = createButton("Resetovat");
         resetButton.setOnAction(e -> {
             velocity = 0;
             position = START_X;
@@ -101,9 +105,12 @@ public class SecondLawScene {
             forceValueLabel.setText("Síla: 4.0 N");
             massValueLabel.setText("Hmotnost: 2.0 kg");
 
-
             velocitySeries.getData().clear();
+
+            startButton.setVisible(true);
+            resetButton.setVisible(false);
         });
+
 
         Button backbutton = createButton("Zpět");
         backbutton.setOnAction(e -> new SecondLawTheory().show(stage));
@@ -136,6 +143,7 @@ public class SecondLawScene {
         stage.setTitle("Second Law Simulation");
         stage.setScene(scene);
         stage.setResizable(false);
+        stage.centerOnScreen();
         stage.show();
 
 
