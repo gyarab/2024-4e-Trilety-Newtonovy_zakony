@@ -24,29 +24,29 @@ public class FirstLawTheory {
         VBox layout = new VBox(20);
         layout.setAlignment(Pos.CENTER);
         layout.setStyle("-fx-padding: 20;");
-        
+
         LinearGradient backgroundGradient = new LinearGradient(0, 0, 1, 0, true, null,
                 new Stop(0, Color.LIGHTYELLOW),
                 new Stop(1, Color.ORANGE));
         layout.setBackground(new Background(new BackgroundFill(backgroundGradient, CornerRadii.EMPTY, null)));
 
-    
+
         Text title = new Text("První Newtonův Zákon");
         title.setFont(Font.font("Arial", 36));
         title.setFill(Color.WHITE);
         title.setTextAlignment(TextAlignment.CENTER);
         title.setEffect(new DropShadow(10, Color.BLACK));
-        title.setEffect(new Glow(0.6)); 
-        
+        title.setEffect(new Glow(0.6));
+
         Text explanation = new Text("Těleso setrvává v klidu nebo v rovnoměrném přímočarém pohybu," +
                 " pokud na něj nepůsobí vnější síly nebo pokud jsou výsledné síly nulové.");
-        explanation.setFont(Font.font("Verdana", 18)); 
+        explanation.setFont(Font.font("Verdana", 18));
         explanation.setFill(Color.WHITE);
-        explanation.setTextAlignment(TextAlignment.CENTER); 
-        explanation.setWrappingWidth(700); 
-        explanation.setLineSpacing(5);  
-        explanation.setEffect(new DropShadow(8, Color.BLACK)); 
-        
+        explanation.setTextAlignment(TextAlignment.CENTER);
+        explanation.setWrappingWidth(700);
+        explanation.setLineSpacing(5);
+        explanation.setEffect(new DropShadow(8, Color.BLACK));
+
         Button examplesButton = createStyledButton("Příklady");
         Button simulationButton = createStyledButton("Simulace");
         Button backButton = createStyledButton("Zpět");
@@ -54,16 +54,17 @@ public class FirstLawTheory {
         simulationButton.setOnAction(e -> new FirstLawScene().showWindow());
         examplesButton.setOnAction(e -> new FirstLawExamples().show(stage));
         backButton.setOnAction(e -> new MainMenuApp().start(stage));
-        
+
         layout.getChildren().addAll(title, explanation, examplesButton, simulationButton, backButton);
-        
+
         Scene scene = new Scene(layout, 800, 600);
         stage.setTitle("Newton's Laws - První Zákon");
         stage.setScene(scene);
         stage.setResizable(false);
+        stage.centerOnScreen();
         stage.show();
     }
-    
+
     private Button createStyledButton(String text) {
         Button button = new Button(text);
         button.setFont(Font.font("Arial", 16));
