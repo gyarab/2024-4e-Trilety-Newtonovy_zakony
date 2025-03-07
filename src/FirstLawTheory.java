@@ -51,7 +51,7 @@ public class FirstLawTheory {
         Button simulationButton = createStyledButton("Simulace");
         Button backButton = createStyledButton("Zpět");
 
-        simulationButton.setOnAction(e -> new FirstLawScene().showWindow());
+        simulationButton.setOnAction(e -> new FirstLawScene().show(stage));
         examplesButton.setOnAction(e -> new FirstLawExamples().show(stage));
         backButton.setOnAction(e -> new MainMenuApp().start(stage));
 
