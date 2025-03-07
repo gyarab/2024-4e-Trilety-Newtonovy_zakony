@@ -126,10 +126,21 @@ public class ThirdLawScene {
         double combinedRadius = ball1.getRadius() + ball2.getRadius();
 
         if (distance < combinedRadius) {
-            double newV1 = ((m1 - m2) * v1 + 2 * m2 * v2) / (m1 + m2);
-            double newV2 = ((m2 - m1) * v2 + 2 * m1 * v1) / (m1 + m2);
-            v1 = newV1;
-            v2 = newV2;
+            if (isElastic) {
+
+                double newV1 = ((m1 - m2) * v1 + 2 * m2 * v2) / (m1 + m2);
+                double newV2 = ((m2 - m1) * v2 + 2 * m1 * v1) / (m1 + m2);
+                v1 = newV1;
+                v2 = newV2;
+            } else {
+
+                double newV1 = ((m1 - m2) * v1 + 2 * m2 * v2) / (m1 + m2);
+                double newV2 = ((m2 - m1) * v2 + 2 * m1 * v1) / (m1 + m2);
+
+
+                v1 = newV1 * 0.8;
+                v2 = newV2 * 0.8;
+            }
         }
 
         if (ball1.getCenterX() - ball1.getRadius() <= 0 || ball1.getCenterX() + ball1.getRadius() >= WIDTH) v1 = -v1;
@@ -137,6 +148,7 @@ public class ThirdLawScene {
 
         updateInfoLabel();
     }
+
 
     private void resetSimulation() {
         ball1.setCenterX(50);
@@ -153,10 +165,10 @@ public class ThirdLawScene {
 
     private void updateInfoLabel() {
         infoLabel.setText(String.format("""
-            Modrá koule - Hmotnost: %.1f kg, Rychlost: %.1f m/s
-            Červená koule - Hmotnost: %.1f kg, Rychlost: %.1f m/s
-            Srážka: %s
-            Tření: %s (%.2f)""",
+                        Modrá koule - Hmotnost: %.1f kg, Rychlost: %.1f m/s
+                        Červená koule - Hmotnost: %.1f kg, Rychlost: %.1f m/s
+                        Srážka: %s
+                        Tření: %s (%.2f)""",
                 m1, v1, m2, v2, isElastic ? "Elastická" : "Neelastická", isFrictionEnabled ? "Zapnuto" : "Vypnuto", friction));
     }
 }
