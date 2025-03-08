@@ -51,7 +51,7 @@ public class SecondLawTheory {
 
         simulationButton.setOnAction(e -> new SecondLawScene().show(stage));
 
-        examplesButton.setOnAction(e -> new MainMenuApp().start(stage));
+        examplesButton.setOnAction(e -> new SecondLawExamples().show(stage));
 
         graphButton.setOnAction(e -> new SecondLawGraf().showWindow());
 
@@ -78,5 +78,4 @@ public class SecondLawTheory {
         return button;
     }
 }
-
 
