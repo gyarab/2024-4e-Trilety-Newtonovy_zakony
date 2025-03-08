@@ -118,11 +118,6 @@ public class ThirdLawScene {
 
 
     private void update() {
-        if (totalKineticEnergyBefore == 0) {
-            totalKineticEnergyBefore = calculateKineticEnergy(m1, v1) + calculateKineticEnergy(m2, v2);
-        }
-
-
         ball1.setCenterX(ball1.getCenterX() + v1);
         ball2.setCenterX(ball2.getCenterX() + v2);
 
@@ -152,7 +147,12 @@ public class ThirdLawScene {
                 ball1.setCenterX(ball2.getCenterX() + combinedRadius);
             }
 
-            totalKineticEnergyBefore = totalKineticEnergyAfter;
+            if (totalKineticEnergyBefore < totalKineticEnergyAfter) {
+                totalKineticEnergyBefore = calculateKineticEnergy(m1, v1) + calculateKineticEnergy(m2, v2);
+            } else {
+                totalKineticEnergyBefore = totalKineticEnergyAfter;
+            }
+
             totalKineticEnergyAfter = calculateKineticEnergy(m1, v1) + calculateKineticEnergy(m2, v2);
         }
 
@@ -230,3 +230,4 @@ public class ThirdLawScene {
                 totalKineticEnergyBefore, totalKineticEnergyAfter));
     }
 }
+
