@@ -76,7 +76,7 @@ public class FirstLawExamples {
 
         Button backButton = new Button("🔙 Zpět");
         backButton.setStyle("-fx-font-size: 18px; -fx-background-color: #FF5733; -fx-text-fill: white; -fx-padding: 10px; -fx-border-radius: 10px;");
-        backButton.setOnAction(e -> new MainMenuApp().start(stage));
+        backButton.setOnAction(e -> new FirstLawTheory().show(stage));
 
         VBox layout = new VBox(20, titleLabel, theoryLabel, exampleSelector, exampleLabel, answerSelector,
                 checkAnswerButton, feedbackLabel, solutionLabel, backButton);
