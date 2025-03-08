@@ -49,6 +49,7 @@ public class ThirdLawTheory {
         Button simulationButton = createStyledButton("Simulace");
         Button backButton = createStyledButton("Zpět");
 
+        examplesButton.setOnAction(e -> new ThirdLawExamples().show(stage));
         simulationButton.setOnAction(e -> new ThirdLawScene().show(stage));
         backButton.setOnAction(e -> new MainMenuApp().start(stage));
 
@@ -61,7 +62,7 @@ public class ThirdLawTheory {
         stage.centerOnScreen();
         stage.show();
     }
-    
+
     private Button createStyledButton(String text) {
         Button button = new Button(text);
         button.setFont(Font.font("Arial", 16));
