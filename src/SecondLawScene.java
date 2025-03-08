@@ -15,6 +15,7 @@ import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
@@ -36,41 +37,49 @@ public class SecondLawScene {
     private boolean running = false;
     private long startTime = 0;
 
-
     private XYChart.Series<Number, Number> velocitySeries;
+    private Line forceVector;
+    private Label forceLabel;
 
     public void show(Stage stage) {
         Pane simulationPane = new Pane();
 
-
         Rectangle background = new Rectangle(0, 0, WIDTH, HEIGHT);
         background.setFill(new LinearGradient(0, 0, 1, 1, true, CycleMethod.NO_CYCLE,
                 new Stop(0, Color.LIGHTBLUE), new Stop(1, Color.POWDERBLUE)));
-
 
         Circle ball = new Circle(RADIUS, Color.RED);
         ball.setCenterX(position);
         ball.setCenterY(START_Y);
         ball.setEffect(new javafx.scene.effect.DropShadow(10, Color.BLACK));
 
-        simulationPane.getChildren().addAll(background, ball);
+        forceVector = new Line(position, START_Y, position, START_Y); // Počáteční pozice šipky (0 délka)
+        forceVector.setStrokeWidth(3);
+        forceVector.setStroke(Color.YELLOW);
+
+        forceLabel = new Label("Síla");
+        forceLabel.setFont(new Font("Arial", 14));
+        forceLabel.setTextFill(Color.YELLOW);
+        forceLabel.setLayoutX(position - 25);
+        forceLabel.setLayoutY(START_Y - 20);
+
+        simulationPane.getChildren().addAll(background, ball, forceVector, forceLabel);
 
 
         Label velocityLabel = createLabel("Rychlost: 0.0 m/s");
         Label accelerationLabel = createLabel("Zrychlení: 0.0 m/s²");
         Label timeLabel = createLabel("Čas: 0.0 s");
-        Label massValueLabel = createLabel("Hmotnost: 2.0 kg");
+        Label massValueLabel = createLabel("Hmotnost: 20.0 kg");
         Label forceValueLabel = createLabel("Síla: 4.0 N");
 
 
-        Slider massSlider = createSlider(0.1,100, 2);
+        Slider massSlider = createSlider(0.1, 100, 20);
         massSlider.valueProperty().addListener((obs, oldVal, newVal) -> {
             mass = newVal.doubleValue();
             massValueLabel.setText(String.format("Hmotnost: %.1f kg", mass));
         });
 
-
-        Slider forceSlider = createSlider(0,200,  0);
+        Slider forceSlider = createSlider(0, 200, 4);
         forceSlider.valueProperty().addListener((obs, oldVal, newVal) -> {
             force = newVal.doubleValue();
             forceValueLabel.setText(String.format("Síla: %.1f N", force));
@@ -84,6 +93,8 @@ public class SecondLawScene {
         startButton.setOnAction(e -> {
             running = true;
             startTime = System.nanoTime();
+            forceVector.setVisible(true);
+            forceLabel.setVisible(true);
             startButton.setVisible(false);
             resetButton.setVisible(true);
         });
@@ -103,18 +114,19 @@ public class SecondLawScene {
             accelerationLabel.setText("Zrychlení: 0.0 m/s²");
             timeLabel.setText("Čas: 0.0 s");
             forceValueLabel.setText("Síla: 4.0 N");
-            massValueLabel.setText("Hmotnost: 2.0 kg");
+            massValueLabel.setText("Hmotnost: 20.0 kg");
 
             velocitySeries.getData().clear();
+
+            forceVector.setVisible(false);
+            forceLabel.setVisible(false);
 
             startButton.setVisible(true);
             resetButton.setVisible(false);
         });
 
-
-        Button backbutton = createButton("Zpět");
-        backbutton.setOnAction(e -> new SecondLawTheory().show(stage));
-
+        Button backButton = createButton("Zpět");
+        backButton.setOnAction(e -> new SecondLawTheory().show(stage));
 
         LineChart<Number, Number> velocityChart = createChart();
         velocitySeries = new XYChart.Series<>();
@@ -122,19 +134,17 @@ public class SecondLawScene {
         velocityChart.setLayoutX(50);
         velocityChart.setLayoutY(450);
 
-
         VBox controls = new VBox(15,
                 new Label("Hmotnost (kg):"),
                 massSlider,
                 new Label("Síla (N):"),
-                forceSlider,massValueLabel, forceValueLabel,
+                forceSlider, massValueLabel, forceValueLabel,
                 velocityLabel, accelerationLabel, timeLabel,
-                startButton, resetButton, backbutton
+                startButton, resetButton, backButton
         );
         controls.setLayoutX(750);
         controls.setLayoutY(50);
         controls.setStyle("-fx-background-color: #ffffff; -fx-padding: 15; -fx-border-radius: 10px;");
-
 
         Pane root = new Pane();
         root.getChildren().addAll(simulationPane, controls, velocityChart);
@@ -146,7 +156,6 @@ public class SecondLawScene {
         stage.centerOnScreen();
         stage.show();
 
-
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -155,11 +164,22 @@ public class SecondLawScene {
                     lastTime = now;
                     return;
                 }
+
                 double deltaTime = (now - lastTime) / 1_000_000_000.0;
                 double acceleration = force / mass;
                 velocity += acceleration * deltaTime;
                 position += velocity * deltaTime * SCALE_FACTOR;
 
+                double forceDirectionX = force > 0 ? 1 : -1;
+                double forceLength = force * SCALE_FACTOR * 0.3;
+
+                forceVector.setStartX(position);
+                forceVector.setStartY(START_Y);
+                forceVector.setEndX(position + forceLength * forceDirectionX);
+                forceVector.setEndY(START_Y);
+
+                forceLabel.setLayoutX(position + forceLength * forceDirectionX - 25);
+                forceLabel.setLayoutY(START_Y - 20);
 
                 if (position > WIDTH) {
                     position = 0;
@@ -205,7 +225,6 @@ public class SecondLawScene {
         return button;
     }
 
-
     private LineChart<Number, Number> createChart() {
         NumberAxis xAxis = new NumberAxis();
         xAxis.setLabel("Čas (s)");
@@ -220,3 +239,4 @@ public class SecondLawScene {
         return lineChart;
     }
 }
+
