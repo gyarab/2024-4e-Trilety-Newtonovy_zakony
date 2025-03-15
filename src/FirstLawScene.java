@@ -187,21 +187,25 @@ public class FirstLawScene {
             gc.setFill(Color.GREEN);
             gc.fillText("Tření", x + 30, y + 10);
         }
-
-
+        
         gc.setFill(Color.WHITE);
         gc.setFont(new Font("Arial", 14));
-        gc.fillText("Rychlost X: " + String.format("%.2f", velocityX) + " m/s", 20, 20);
-        gc.fillText("Rychlost Y: " + String.format("%.2f", velocityY) + " m/s", 20, 40);
-        gc.fillText("Tření: " + String.format("%.3f", friction) + " (" + (frictionEnabled ? "Zapnuto" : "Vypnuto") + ")", 20, 60);
-        gc.fillText("Odpor prostředí: " + String.format("%.2f", ResistanceCoefficient) + " (" + (ResistanceEnabled ? "Zapnutý (R pro vypnutí)" : "Vypnutý (R pro zapnutí)") + ")", 20, 80);
-        gc.fillText("Gravitace: " + (gravityEnabled ? "Zapnutá (G pro vypnutí)" : "Vypnuto (G pro zapnutí)"), 20, 100);
-        gc.fillText("Odskočení od spodka obrazovky: " + (bouncingEnabled ? "Zapnuté (B pro vypnutí)" : "Vypnuto (B pro zapnutí)"), 20, 120);
-        gc.fillText("Šipky -> Přidej rychlost | Space -> Stop", 20, 140);
-        gc.fillText("(P)lus / (M)ínus -> Změna tření", 20, 160);
-        gc.fillText("V / C -> Změna koeficientu prostředí", 20, 180);
-        gc.fillText("Šipka nahoru -> Skok nahoru | Šipka dolů -> Pohyb dolů", 20, 200);
-        gc.fillText("J -> Zpět", 20, 220);
+        gc.fillText("Ovládání:", 20, 20);
+        gc.fillText("Šipky -> Přidej rychlost", 20, 40);
+        gc.fillText("Space -> Stop", 20, 60);
+        gc.fillText("(P)lus / (M)ínus -> Změna tření", 20, 80);
+        gc.fillText("(V)ětší / (C)menší odpor prostředí", 20, 100);
+        gc.fillText("G -> Přepnout gravitaci", 20, 120);
+        gc.fillText("B -> Přepnout odraz", 20, 140);
+        gc.fillText("R -> Přepnout odpor prostředí", 20, 160);
+        gc.fillText("J -> Zpět", 20, 180);
+
+        gc.fillText("Rychlost X: " + String.format("%.2f", velocityX) + " m/s", WIDTH - 200, 20);
+        gc.fillText("Rychlost Y: " + String.format("%.2f", velocityY) + " m/s", WIDTH - 200, 40);
+        gc.fillText("Tření: " + String.format("%.3f", friction) + " (" + (frictionEnabled ? "Zapnuto" : "Vypnuto") + ")", WIDTH - 200, 60);
+        gc.fillText("Odpor prostředí: " + String.format("%.2f", ResistanceCoefficient)+ " (" + (ResistanceEnabled ? "Zapnuto" : "Vypnuto") + ")", WIDTH - 200, 80);
+        gc.fillText("Gravitace: " + (gravityEnabled ? "Zapnutá" : "Vypnutá"), WIDTH - 200, 100);
+        gc.fillText("Odskočení: " + (bouncingEnabled ? "Zapnuté" : "Vypnuté"), WIDTH - 200, 120);
     }
 
 }
