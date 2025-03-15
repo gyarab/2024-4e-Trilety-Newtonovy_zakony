@@ -54,7 +54,12 @@ public class ThirdLawScene {
         root.getChildren().add(background);
 
         ball1 = new Circle(50, HEIGHT / 2 + 50, 20, Color.BLUE);
+        ball1.setStroke(Color.BLACK);
+        ball1.setStrokeWidth(2);
+
         ball2 = new Circle(300, HEIGHT / 2 + 50, 30, Color.RED);
+        ball2.setStroke(Color.BLACK);
+        ball2.setStrokeWidth(2);
 
         infoLabel.setTranslateX(WIDTH - 350);
         infoLabel.setTranslateY(10);
@@ -130,6 +135,10 @@ public class ThirdLawScene {
         double combinedRadius = ball1.getRadius() + ball2.getRadius();
 
         if (distance < combinedRadius) {
+            double overlap = combinedRadius - distance;
+            double nx = (ball2.getCenterX() - ball1.getCenterX()) / distance;
+            ball1.setCenterX(ball1.getCenterX() - nx * overlap / 2);
+            ball2.setCenterX(ball2.getCenterX() + nx * overlap / 2);
             double newV1 = ((m1 - m2) * v1 + 2 * m2 * v2) / (m1 + m2);
             double newV2 = ((m2 - m1) * v2 + 2 * m1 * v1) / (m1 + m2);
 
@@ -230,4 +239,5 @@ public class ThirdLawScene {
                 totalKineticEnergyBefore, totalKineticEnergyAfter));
     }
 }
+
 
