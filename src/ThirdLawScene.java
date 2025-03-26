@@ -28,6 +28,7 @@ public class ThirdLawScene {
     private boolean isElastic = true;
     private boolean isFrictionEnabled = false;
     private double friction = 0.99;
+    private double restitutionCoefficient = 0.8;
 
     private final Label infoLabel;
 
@@ -67,18 +68,20 @@ public class ThirdLawScene {
         updateInfoLabel();
 
         Label controlsLabel = new Label(""" 
-                Ovládání:
-                ← → - Změna rychlosti modré koule
-                ↑ ↓ - Změna rychlosti červené koule
-                A/D - Změna hmotnosti modré koule
-                W/S - Změna hmotnosti červené koule
-                R - Reset simulace
-                P - Pozastavení/pokračování
-                E - Elastická/Neelastická srážka
-                T - Aktivace/Vypnutí tření
-                (V)íce / (M)éně - Zvýšení / Snížení tření
-                B - Zpět do Menu
-                """
+        Ovládání:
+        ← → - Změna rychlosti modré koule
+        ↑ ↓ - Změna rychlosti červené koule
+        A/D - Změna hmotnosti modré koule
+        W/S - Změna hmotnosti červené koule
+        R - Reset simulace
+        P - Pozastavení/pokračování
+        E - Elastická/Neelastická srážka
+        T - Aktivace/Vypnutí tření
+        (V)íce / (M)éně - Zvýšení / Snížení tření
+        L - Zvýšení koeficientu odrazu
+        O - Snížení koeficientu odrazu
+        B - Zpět do Menu
+        """
         );
         controlsLabel.setTranslateX(10);
         controlsLabel.setTranslateY(10);
@@ -110,6 +113,8 @@ public class ThirdLawScene {
                 case V -> friction = Math.min(0.999, friction + 0.01);
                 case M -> friction = Math.max(0.9, friction - 0.01);
                 case B -> new ThirdLawTheory().show(stage);
+                case L -> restitutionCoefficient = Math.min(1.0, restitutionCoefficient + 0.05);
+                case O -> restitutionCoefficient = Math.max(0.05, restitutionCoefficient - 0.05);
             }
             updateInfoLabel();
         });
@@ -139,6 +144,7 @@ public class ThirdLawScene {
             double nx = (ball2.getCenterX() - ball1.getCenterX()) / distance;
             ball1.setCenterX(ball1.getCenterX() - nx * overlap / 2);
             ball2.setCenterX(ball2.getCenterX() + nx * overlap / 2);
+
             double newV1 = ((m1 - m2) * v1 + 2 * m2 * v2) / (m1 + m2);
             double newV2 = ((m2 - m1) * v2 + 2 * m1 * v1) / (m1 + m2);
 
@@ -146,8 +152,8 @@ public class ThirdLawScene {
                 v1 = newV1;
                 v2 = newV2;
             } else {
-                v1 = newV1 * 0.8;
-                v2 = newV2 * 0.8;
+                v1 = newV1 * restitutionCoefficient;
+                v2 = newV2 * restitutionCoefficient;
             }
 
             if (ball1.getCenterX() < ball2.getCenterX()) {
@@ -179,38 +185,23 @@ public class ThirdLawScene {
 
     private void updateFrictionForceArrows() {
         if (isFrictionEnabled && friction > 0) {
-            double arrowLength = 50;
-            Color arrowColor = Color.DARKGREEN;
-
-            frictionForceArrow1.setStartX(ball1.getCenterX());
-            frictionForceArrow1.setStartY(ball1.getCenterY());
-
-            if (v1 > 0) {
-                frictionForceArrow1.setEndX(ball1.getCenterX() - arrowLength);
-            } else {
-                frictionForceArrow1.setEndX(ball1.getCenterX() + arrowLength);
-            }
-            frictionForceArrow1.setEndY(ball1.getCenterY());
-            frictionForceArrow1.setStroke(arrowColor);
-            frictionForceArrow1.setStrokeWidth(3);
-            frictionForceArrow1.setVisible(true);
-
-            frictionForceArrow2.setStartX(ball2.getCenterX());
-            frictionForceArrow2.setStartY(ball2.getCenterY());
-
-            if (v2 > 0) {
-                frictionForceArrow2.setEndX(ball2.getCenterX() - arrowLength);
-            } else {
-                frictionForceArrow2.setEndX(ball2.getCenterX() + arrowLength);
-            }
-            frictionForceArrow2.setEndY(ball2.getCenterY());
-            frictionForceArrow2.setStroke(arrowColor);
-            frictionForceArrow2.setStrokeWidth(3);
-            frictionForceArrow2.setVisible(true);
+            updateArrow(frictionForceArrow1, ball1.getCenterX(), ball1.getCenterY(), v1);
+            updateArrow(frictionForceArrow2, ball2.getCenterX(), ball2.getCenterY(), v2);
         } else {
             frictionForceArrow1.setVisible(false);
             frictionForceArrow2.setVisible(false);
         }
+    }
+
+    private void updateArrow(Line arrow, double x, double y, double velocity) {
+        double arrowLength = 50;
+        arrow.setStartX(x);
+        arrow.setStartY(y);
+        arrow.setEndX(x + (velocity > 0 ? -arrowLength : arrowLength));
+        arrow.setEndY(y);
+        arrow.setStroke(Color.DARKGREEN);
+        arrow.setStrokeWidth(3);
+        arrow.setVisible(true);
     }
 
 
@@ -229,14 +220,15 @@ public class ThirdLawScene {
 
     private void updateInfoLabel() {
         infoLabel.setText(String.format(""" 
-                        Modrá koule - Hmotnost: %.1f kg, Rychlost: %.1f m/s
-                        Červená koule - Hmotnost: %.1f kg, Rychlost: %.1f m/s
-                        Srážka: %s
-                        Tření: %s (%.2f)
-                        Kinetická energie před srážkou: %.2f J
-                        Kinetická energie po srážce: %.2f J""",
+            Modrá koule - Hmotnost: %.1f kg, Rychlost: %.1f m/s
+            Červená koule - Hmotnost: %.1f kg, Rychlost: %.1f m/s
+            Srážka: %s
+            Tření: %s (%.2f)
+            Koeficient odrazu: %.2f
+            Kinetická energie před srážkou: %.2f J
+            Kinetická energie po srážce: %.2f J""",
                 m1, v1, m2, v2, isElastic ? "Elastická" : "Neelastická", isFrictionEnabled ? "Zapnuto" : "Vypnuto", friction,
-                totalKineticEnergyBefore, totalKineticEnergyAfter));
+                restitutionCoefficient, totalKineticEnergyBefore, totalKineticEnergyAfter));
     }
 }
 
