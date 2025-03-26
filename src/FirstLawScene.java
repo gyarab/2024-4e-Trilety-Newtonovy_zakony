@@ -201,8 +201,8 @@ public class FirstLawScene {
         gc.fillText("G -> Přepnout gravitaci", 20, 120);
         gc.fillText("B -> Přepnout odraz", 20, 140);
         gc.fillText("R -> Přepnout odpor prostředí", 20, 160);
-        gc.fillText("(O) -> Zvýšit odraz", 20, 180);
-        gc.fillText("(L) -> Snížit odraz", 20, 200);
+        gc.fillText("O -> Zvýšit odraz", 20, 180);
+        gc.fillText("L -> Snížit odraz", 20, 200);
         gc.fillText("J -> Zpět", 20, 220);
 
         gc.fillText("Rychlost X: " + String.format("%.2f", velocityX) + " m/s", WIDTH - 200, 20);
