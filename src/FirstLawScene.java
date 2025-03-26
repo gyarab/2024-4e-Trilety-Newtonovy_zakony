@@ -26,6 +26,7 @@ public class FirstLawScene {
     private boolean bouncingEnabled = false;
     private boolean ResistanceEnabled = false;
     private double ResistanceCoefficient = 0.05;
+    private double bounceFactor = 0.7;
 
     private final int numStars = 150;
     private final double[] starX = new double[numStars];
@@ -88,6 +89,8 @@ public class FirstLawScene {
             case J -> new FirstLawTheory().show(stage);
             case V -> ResistanceCoefficient += 0.01;
             case C -> ResistanceCoefficient = Math.max(ResistanceCoefficient - 0.01, 0);
+            case O -> bounceFactor = Math.min(bounceFactor + 0.05, 1.0);
+            case L -> bounceFactor = Math.max(bounceFactor - 0.05, 0.05);
 
         }
     }
@@ -109,7 +112,7 @@ public class FirstLawScene {
         if (y > HEIGHT - 45) {
             y = HEIGHT - 45;
             if (bouncingEnabled) {
-                velocityY = -Math.abs(velocityY) * 0.7;
+                velocityY = -Math.abs(velocityY) * bounceFactor;
             } else {
                 velocityY = 0;
             }
@@ -118,7 +121,7 @@ public class FirstLawScene {
         if (y < 0) {
             y = 0;
             if (bouncingEnabled) {
-                velocityY = Math.abs(velocityY) * 0.7;
+                velocityY = Math.abs(velocityY) * bounceFactor;
             } else {
                 velocityY = 0;
             }
@@ -187,7 +190,7 @@ public class FirstLawScene {
             gc.setFill(Color.GREEN);
             gc.fillText("Tření", x + 30, y + 10);
         }
-        
+
         gc.setFill(Color.WHITE);
         gc.setFont(new Font("Arial", 14));
         gc.fillText("Ovládání:", 20, 20);
@@ -198,14 +201,17 @@ public class FirstLawScene {
         gc.fillText("G -> Přepnout gravitaci", 20, 120);
         gc.fillText("B -> Přepnout odraz", 20, 140);
         gc.fillText("R -> Přepnout odpor prostředí", 20, 160);
-        gc.fillText("J -> Zpět", 20, 180);
+        gc.fillText("(O) -> Zvýšit odraz", 20, 180);
+        gc.fillText("(L) -> Snížit odraz", 20, 200);
+        gc.fillText("J -> Zpět", 20, 220);
 
         gc.fillText("Rychlost X: " + String.format("%.2f", velocityX) + " m/s", WIDTH - 200, 20);
         gc.fillText("Rychlost Y: " + String.format("%.2f", velocityY) + " m/s", WIDTH - 200, 40);
         gc.fillText("Tření: " + String.format("%.3f", friction) + " (" + (frictionEnabled ? "Zapnuto" : "Vypnuto") + ")", WIDTH - 200, 60);
         gc.fillText("Odpor prostředí: " + String.format("%.2f", ResistanceCoefficient)+ " (" + (ResistanceEnabled ? "Zapnuto" : "Vypnuto") + ")", WIDTH - 200, 80);
         gc.fillText("Gravitace: " + (gravityEnabled ? "Zapnutá" : "Vypnutá"), WIDTH - 200, 100);
-        gc.fillText("Odskočení: " + (bouncingEnabled ? "Zapnuté" : "Vypnuté"), WIDTH - 200, 120);
+        gc.fillText("Odraz: " + (bouncingEnabled ? "Zapnuté" : "Vypnuté"), WIDTH - 200, 120);
+        gc.fillText("Koeficient odrazu: " + String.format("%.2f",bounceFactor) , WIDTH - 200, 140);
     }
 
 }
