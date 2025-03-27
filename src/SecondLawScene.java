@@ -150,7 +150,7 @@ public class SecondLawScene {
         root.getChildren().addAll(simulationPane, controls, velocityChart);
 
         Scene scene = new Scene(root, WIDTH, HEIGHT);
-        stage.setTitle("Second Law Simulation");
+        stage.setTitle("2.Newtonův zákon");
         stage.setScene(scene);
         stage.setResizable(false);
         stage.centerOnScreen();
