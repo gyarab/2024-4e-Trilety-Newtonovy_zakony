@@ -119,7 +119,7 @@ public class ThirdLawScene {
             updateInfoLabel();
         });
 
-        stage.setTitle("Newtonova Srážka");
+        stage.setTitle("3.Newtonův zákon");
         stage.setScene(scene);
         stage.setResizable(false);
         stage.centerOnScreen();
