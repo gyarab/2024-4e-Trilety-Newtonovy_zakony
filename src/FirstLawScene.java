@@ -27,7 +27,7 @@ public class FirstLawScene {
     private boolean ResistanceEnabled = false;
     private double ResistanceCoefficient = 0.05;
     private double bounceFactor = 0.7;
-
+    private boolean showControls = true;
     private final int numStars = 150;
     private final double[] starX = new double[numStars];
     private final double[] starY = new double[numStars];
@@ -88,9 +88,10 @@ public class FirstLawScene {
             case DOWN -> velocityY += 3;
             case J -> new FirstLawTheory().show(stage);
             case V -> ResistanceCoefficient += 0.01;
-            case C -> ResistanceCoefficient = Math.max(ResistanceCoefficient - 0.01, 0);
+            case Z -> ResistanceCoefficient = Math.max(ResistanceCoefficient - 0.01, 0);
             case O -> bounceFactor = Math.min(bounceFactor + 0.05, 1.0);
             case L -> bounceFactor = Math.max(bounceFactor - 0.05, 0.05);
+            case X -> showControls = !showControls;
 
         }
     }
@@ -193,18 +194,19 @@ public class FirstLawScene {
 
         gc.setFill(Color.WHITE);
         gc.setFont(new Font("Arial", 14));
-        gc.fillText("Ovládání:", 20, 20);
+        gc.fillText("Ovládání (X -> skrýt/zobrazit):", 20, 20);
+        if (showControls) {
         gc.fillText("Šipky -> Přidej rychlost", 20, 40);
         gc.fillText("Space -> Stop", 20, 60);
         gc.fillText("(P)lus / (M)ínus -> Změna tření", 20, 80);
-        gc.fillText("(V)ětší / (C)menší odpor prostředí", 20, 100);
+        gc.fillText("(V)ětší / (Z)menší odpor prostředí", 20, 100);
         gc.fillText("G -> Přepnout gravitaci", 20, 120);
         gc.fillText("B -> Přepnout odraz", 20, 140);
         gc.fillText("R -> Přepnout odpor prostředí", 20, 160);
         gc.fillText("O -> Zvýšit odraz", 20, 180);
         gc.fillText("L -> Snížit odraz", 20, 200);
         gc.fillText("J -> Zpět", 20, 220);
-
+        }
         gc.fillText("Rychlost X: " + String.format("%.2f", velocityX) + " m/s", WIDTH - 200, 20);
         gc.fillText("Rychlost Y: " + String.format("%.2f", velocityY) + " m/s", WIDTH - 200, 40);
         gc.fillText("Tření: " + String.format("%.3f", friction) + " (" + (frictionEnabled ? "Zapnuto" : "Vypnuto") + ")", WIDTH - 200, 60);
@@ -215,3 +217,5 @@ public class FirstLawScene {
     }
 
 }
+
+
