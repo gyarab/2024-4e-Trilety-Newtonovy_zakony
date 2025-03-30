@@ -19,12 +19,15 @@ import javafx.stage.Stage;
 
 public class ThirdLawTheory {
 
+    // Metoda pro zobrazení obrazovky
     public void show(Stage stage) {
 
+        // Vytvoření vertikálního layoutu
         VBox layout = new VBox(20);
         layout.setAlignment(Pos.CENTER);
         layout.setStyle("-fx-padding: 20;");
 
+        // Vytvoření barevného pozadí
         LinearGradient gradient = new LinearGradient(0, 0, 0, 1, true, null,
                 new Stop(0, Color.LIGHTBLUE),
                 new Stop(1, Color.DARKBLUE));
@@ -37,6 +40,7 @@ public class ThirdLawTheory {
         title.setEffect(new DropShadow(10, Color.BLACK));
         title.setEffect(new Glow(0.6));
 
+        // Vysvětlení třetího zákona
         Text explanation = new Text("Každá akce vyvolá stejně velkou opačně orientovanou reakci.");
         explanation.setFont(Font.font("Arial", 18));
         explanation.setFill(Color.WHITE);
@@ -53,8 +57,10 @@ public class ThirdLawTheory {
         simulationButton.setOnAction(e -> new ThirdLawScene().show(stage));
         backButton.setOnAction(e -> new MainMenuApp().start(stage));
 
+        // Přidání komponent do layoutu
         layout.getChildren().addAll(title, explanation, examplesButton, simulationButton, backButton);
 
+        // Vytvoření scény
         Scene scene = new Scene(layout, 800, 600);
         stage.setTitle("Newton's Laws - Třetí Zákon");
         stage.setScene(scene);
@@ -63,6 +69,7 @@ public class ThirdLawTheory {
         stage.show();
     }
 
+    // Pomocná metoda pro vytvoření stylizovaného tlačítka
     private Button createStyledButton(String text) {
         Button button = new Button(text);
         button.setFont(Font.font("Arial", 16));
