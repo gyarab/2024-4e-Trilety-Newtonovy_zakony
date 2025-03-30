@@ -7,14 +7,18 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class SecondLawGraf extends JFrame {
+    // Datové řady pro grafy
     private XYSeries velocitySeries = new XYSeries("Rychlost (m/s)");
     private XYSeries positionSeries = new XYSeries("Poloha (m)");
+
+    // proměnné
     private double mass = 1.0;
     private double force = 10.0;
     private double velocity = 0.0;
@@ -22,6 +26,7 @@ public class SecondLawGraf extends JFrame {
     private double time = 0.0;
     private Timer timer;
 
+    //Konstruktor, který nastavuje GUI okna a jeho funkcionalitu
     public SecondLawGraf() {
         setTitle("Simulace 2.Newtonova zákona");
         setSize(800, 600);
@@ -36,6 +41,7 @@ public class SecondLawGraf extends JFrame {
         JButton startButton = new JButton("Start");
         JButton stopButton = new JButton("Zastavit");
 
+        // Přidání komponent do ovládacího panelu
         controlPanel.add(massLabel);
         controlPanel.add(massField);
         controlPanel.add(forceLabel);
@@ -44,18 +50,20 @@ public class SecondLawGraf extends JFrame {
         controlPanel.add(stopButton);
         add(controlPanel, BorderLayout.NORTH);
 
-
+        // Vytvoření grafů (rychlost vs. čas a poloha vs. čas)
         JFreeChart velocityChart = ChartFactory.createXYLineChart("Rychlost vs. Čas", "Čas (s)", "Rychlost (m/s)", new XYSeriesCollection(velocitySeries), PlotOrientation.VERTICAL, true, true, false);
         JFreeChart positionChart = ChartFactory.createXYLineChart("Poloha vs. Čas", "Čas (s)", "Poloha (m)", new XYSeriesCollection(positionSeries), PlotOrientation.VERTICAL, true, true, false);
 
+        // Panel pro zobrazení grafů
         JPanel chartPanel = new JPanel(new GridLayout(2, 1));
         chartPanel.add(new ChartPanel(velocityChart));
         chartPanel.add(new ChartPanel(positionChart));
         add(chartPanel, BorderLayout.CENTER);
 
         JPanel buttonPanel = new JPanel();
-        JButton backButton = new JButton("Zpět");
 
+
+        // Nastavení časovače pro aktualizaci simulace
         timer = new Timer(100, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -68,6 +76,7 @@ public class SecondLawGraf extends JFrame {
             }
         });
 
+        // Akce pro tlačítko Start
         startButton.addActionListener(e -> {
             try {
                 mass = Double.parseDouble(massField.getText());
@@ -88,19 +97,10 @@ public class SecondLawGraf extends JFrame {
             timer.stop();
         });
 
-
-        backButton.addActionListener(e -> {
-            timer.stop();
-            dispose();
-
-
-            SwingUtilities.invokeLater(() -> new MainMenuApp().showWindow());
-        });
-
-        buttonPanel.add(backButton);
         add(buttonPanel, BorderLayout.SOUTH);
     }
 
+    //zobrazení simulace
     public void showWindow() {
         setVisible(true);
     }
