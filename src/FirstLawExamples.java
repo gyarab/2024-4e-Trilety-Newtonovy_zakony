@@ -12,12 +12,14 @@ import java.util.Map;
 
 public class FirstLawExamples {
 
+    // Mapy pro ukládání příkladů a správných odpovědí
     private final Map<String, String[]> examples = new HashMap<>();
     private final Map<String, String> correctAnswers = new HashMap<>();
 
     private Label exampleLabel, feedbackLabel, solutionLabel;
     private ComboBox<String> answerSelector, exampleSelector;
 
+    // Konstruktor, který inicializuje příklady a správné odpovědi
     public FirstLawExamples() {
         examples.put("Vlak a míček", new String[]{
                 "Co se stane s míčem v zadním vagónu, když se vlak rozjede vpřed?",
@@ -38,6 +40,7 @@ public class FirstLawExamples {
         correctAnswers.put("Auto a led", "bude se pohybovat rovnoměrně");
     }
 
+    // Metoda pro zobrazení scény na obrazovce
     public void show(Stage stage) {
         Label titleLabel = new Label("🌌 První Newtonův zákon 🌌");
         titleLabel.setStyle("-fx-font-size: 36px; -fx-font-weight: bold; -fx-text-fill: #ffffff; -fx-font-family: 'Arial Black';");
@@ -49,7 +52,7 @@ public class FirstLawExamples {
         theoryLabel.setWrapText(true);
         theoryLabel.setMaxWidth(600);
         theoryLabel.setStyle("-fx-font-size: 18px; -fx-text-fill: #ffffff; -fx-font-family: 'Verdana';");
-
+        // ComboBox pro výběr příkladu
         exampleSelector = new ComboBox<>();
         exampleSelector.getItems().addAll(examples.keySet());
         exampleSelector.setPromptText("Vyberte příklad");
@@ -77,17 +80,17 @@ public class FirstLawExamples {
         Button backButton = new Button("🔙 Zpět");
         backButton.setStyle("-fx-font-size: 18px; -fx-background-color: #FF5733; -fx-text-fill: white; -fx-padding: 10px; -fx-border-radius: 10px;");
         backButton.setOnAction(e -> new FirstLawTheory().show(stage));
-
+        // Layout pro všechny komponenty
         VBox layout = new VBox(20, titleLabel, theoryLabel, exampleSelector, exampleLabel, answerSelector,
                 checkAnswerButton, feedbackLabel, solutionLabel, backButton);
         layout.setAlignment(Pos.CENTER);
         layout.setStyle("-fx-padding: 30px; -fx-background-color: linear-gradient(to bottom, #1E3A8A, #4A90E2);");
-
+        // Vytvoření scény a přidání klávesových zkratek
         Scene scene = new Scene(layout, 900, 600);
         scene.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ESCAPE) new MainMenuApp().start(stage);
         });
-
+        // Nastavení scény a zobrazení okna
         stage.setTitle("První Newtonův zákon");
         stage.setScene(scene);
         stage.setResizable(false);
@@ -95,6 +98,7 @@ public class FirstLawExamples {
         stage.show();
     }
 
+    // Načte příklad na základě výběru v ComboBoxu
     private void loadExample() {
         String selectedExample = exampleSelector.getValue();
         if (selectedExample != null && examples.containsKey(selectedExample)) {
@@ -107,6 +111,7 @@ public class FirstLawExamples {
         }
     }
 
+    // Ověření odpovědi uživatele a zobrazení zpětné vazby
     private void checkAnswer() {
         String selectedExample = exampleSelector.getValue();
         String userAnswer = answerSelector.getValue();
@@ -128,3 +133,4 @@ public class FirstLawExamples {
         solutionLabel.setText("Správná odpověď: " + correctAnswer);
     }
 }
+
