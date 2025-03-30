@@ -19,12 +19,14 @@ import javafx.stage.Stage;
 
 public class FirstLawTheory {
 
+    // Metoda pro zobrazení teoretické části o prvním Newtonově zákonu
     public void show(Stage stage) {
 
         VBox layout = new VBox(20);
         layout.setAlignment(Pos.CENTER);
         layout.setStyle("-fx-padding: 20;");
 
+        // Nastavení barevného přechodu na pozadí
         LinearGradient backgroundGradient = new LinearGradient(0, 0, 1, 0, true, null,
                 new Stop(0, Color.LIGHTYELLOW),
                 new Stop(1, Color.ORANGE));
@@ -38,6 +40,7 @@ public class FirstLawTheory {
         title.setEffect(new DropShadow(10, Color.BLACK));
         title.setEffect(new Glow(0.6));
 
+        // Text s vysvětlením prvního Newtonova zákona
         Text explanation = new Text("Těleso setrvává v klidu nebo v rovnoměrném přímočarém pohybu," +
                 " pokud na něj nepůsobí vnější síly nebo pokud jsou výsledné síly nulové.");
         explanation.setFont(Font.font("Verdana", 18));
@@ -57,6 +60,7 @@ public class FirstLawTheory {
 
         layout.getChildren().addAll(title, explanation, examplesButton, simulationButton, backButton);
 
+        // Vytvoření scény s danou velikostí
         Scene scene = new Scene(layout, 800, 600);
         stage.setTitle("Newton's Laws - První Zákon");
         stage.setScene(scene);
@@ -65,6 +69,7 @@ public class FirstLawTheory {
         stage.show();
     }
 
+    // Metoda pro vytvoření tlačítka
     private Button createStyledButton(String text) {
         Button button = new Button(text);
         button.setFont(Font.font("Arial", 16));
