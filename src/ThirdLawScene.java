@@ -19,6 +19,7 @@ public class ThirdLawScene {
     private static final int WIDTH = 1000;
     private static final int HEIGHT = 500;
 
+    // Proměnné
     private Circle ball1, ball2;
     private double v1 = 2;
     private double v2 = -2;
@@ -38,22 +39,26 @@ public class ThirdLawScene {
     private double totalKineticEnergyBefore;
     private double totalKineticEnergyAfter;
 
+    // Konstruktor pro inicializaci proměnných
     public ThirdLawScene() {
         infoLabel = new Label();
         frictionForceArrow1 = new Line();
         frictionForceArrow2 = new Line();
     }
 
+    // metoda pro zobrazení scény
     void show(Stage stage) {
         Pane root = new Pane();
         Scene scene = new Scene(root, WIDTH, HEIGHT);
 
+        // pozadí scény
         Rectangle background = new Rectangle(0, 0, WIDTH, HEIGHT);
         background.setFill(new LinearGradient(0, 0, 1, 1, true, javafx.scene.paint.CycleMethod.NO_CYCLE,
                 new Stop(0, Color.DEEPSKYBLUE),
                 new Stop(1, Color.MIDNIGHTBLUE)));
         root.getChildren().add(background);
 
+        // Vytvoření dvou kuliček s různými barvami a velikostmi
         ball1 = new Circle(50, HEIGHT / 2 + 50, 20, Color.BLUE);
         ball1.setStroke(Color.BLACK);
         ball1.setStrokeWidth(2);
@@ -67,21 +72,22 @@ public class ThirdLawScene {
         infoLabel.setFont(Font.font("Arial", 14));
         updateInfoLabel();
 
+        // Zobrazení ovládacích prvků pro uživatele
         Label controlsLabel = new Label(""" 
-        Ovládání:
-        ← → - Změna rychlosti modré koule
-        ↑ ↓ - Změna rychlosti červené koule
-        A/D - Změna hmotnosti modré koule
-        W/S - Změna hmotnosti červené koule
-        R - Reset simulace
-        P - Pozastavení/pokračování
-        E - Elastická/Neelastická srážka
-        T - Aktivace/Vypnutí tření
-        (V)íce / (M)éně - Zvýšení / Snížení tření
-        L - Zvýšení koeficientu odrazu
-        O - Snížení koeficientu odrazu
-        B - Zpět do Menu
-        """
+                Ovládání:
+                ← → - Změna rychlosti modré koule
+                ↑ ↓ - Změna rychlosti červené koule
+                A/D - Změna hmotnosti modré koule
+                W/S - Změna hmotnosti červené koule
+                R - Reset simulace
+                P - Pozastavení/pokračování
+                E - Elastická/Neelastická srážka
+                T - Aktivace/Vypnutí tření
+                (V)íce / (M)éně - Zvýšení / Snížení tření
+                L - Zvýšení koeficientu odrazu
+                O - Snížení koeficientu odrazu
+                B - Zpět do Menu
+                """
         );
         controlsLabel.setTranslateX(10);
         controlsLabel.setTranslateY(10);
@@ -89,10 +95,12 @@ public class ThirdLawScene {
 
         root.getChildren().addAll(ball1, ball2, infoLabel, controlsLabel, frictionForceArrow1, frictionForceArrow2);
 
+        // Nastavení animace pro aktualizaci simulace
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis(20), e -> update()));
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
 
+        // Ovládání klávesami
         scene.setOnKeyPressed(event -> {
             switch (event.getCode()) {
                 case LEFT -> v1 -= 1;
@@ -119,6 +127,7 @@ public class ThirdLawScene {
             updateInfoLabel();
         });
 
+        // Nastavení názvu scény a zobrazení
         stage.setTitle("3.Newtonův zákon");
         stage.setScene(scene);
         stage.setResizable(false);
@@ -126,8 +135,9 @@ public class ThirdLawScene {
         stage.show();
     }
 
-
+    // Metoda pro aktualizaci simulace
     private void update() {
+        // Posun kuliček
         ball1.setCenterX(ball1.getCenterX() + v1);
         ball2.setCenterX(ball2.getCenterX() + v2);
 
@@ -136,18 +146,23 @@ public class ThirdLawScene {
             v2 *= friction;
         }
 
+        // Vzdálenost mezi kuličkami
         double distance = Math.abs(ball1.getCenterX() - ball2.getCenterX());
+        // Spojený poloměr kuliček
         double combinedRadius = ball1.getRadius() + ball2.getRadius();
 
+        // Srážka
         if (distance < combinedRadius) {
             double overlap = combinedRadius - distance;
             double nx = (ball2.getCenterX() - ball1.getCenterX()) / distance;
             ball1.setCenterX(ball1.getCenterX() - nx * overlap / 2);
             ball2.setCenterX(ball2.getCenterX() + nx * overlap / 2);
 
+            // Výpočet nových rychlostí po srážce
             double newV1 = ((m1 - m2) * v1 + 2 * m2 * v2) / (m1 + m2);
             double newV2 = ((m2 - m1) * v2 + 2 * m1 * v1) / (m1 + m2);
 
+            // Aplikace elastického nebo neelastického odrazu
             if (isElastic) {
                 v1 = newV1;
                 v2 = newV2;
@@ -156,12 +171,14 @@ public class ThirdLawScene {
                 v2 = newV2 * restitutionCoefficient;
             }
 
+            // Nastavení kuliček na správnou pozici po srážce
             if (ball1.getCenterX() < ball2.getCenterX()) {
                 ball1.setCenterX(ball2.getCenterX() - combinedRadius);
             } else {
                 ball1.setCenterX(ball2.getCenterX() + combinedRadius);
             }
 
+            // Výpočet kinetické energie před a po srážce
             if (totalKineticEnergyBefore < totalKineticEnergyAfter) {
                 totalKineticEnergyBefore = calculateKineticEnergy(m1, v1) + calculateKineticEnergy(m2, v2);
             } else {
@@ -171,18 +188,22 @@ public class ThirdLawScene {
             totalKineticEnergyAfter = calculateKineticEnergy(m1, v1) + calculateKineticEnergy(m2, v2);
         }
 
+        // Odrazy kuliček od okrajů scény
         if (ball1.getCenterX() - ball1.getRadius() <= 0 || ball1.getCenterX() + ball1.getRadius() >= WIDTH) v1 = -v1;
         if (ball2.getCenterX() - ball2.getRadius() <= 0 || ball2.getCenterX() + ball2.getRadius() >= WIDTH) v2 = -v2;
 
+        // Aktualizace šipek pro tření
         updateFrictionForceArrows();
         updateInfoLabel();
     }
 
+    // Výpočet kinetické energie kuličky
     private double calculateKineticEnergy(double mass, double velocity) {
         return 0.5 * mass * velocity * velocity;
     }
 
 
+    // Metoda pro zobrazení šipek tření
     private void updateFrictionForceArrows() {
         if (isFrictionEnabled && friction > 0) {
             updateArrow(frictionForceArrow1, ball1.getCenterX(), ball1.getCenterY(), v1);
@@ -193,6 +214,7 @@ public class ThirdLawScene {
         }
     }
 
+    // Nastavení šipek pro tření
     private void updateArrow(Line arrow, double x, double y, double velocity) {
         double arrowLength = 50;
         arrow.setStartX(x);
@@ -204,7 +226,7 @@ public class ThirdLawScene {
         arrow.setVisible(true);
     }
 
-
+    // Resetování simulace
     private void resetSimulation() {
         ball1.setCenterX(50);
         ball2.setCenterX(300);
@@ -218,18 +240,17 @@ public class ThirdLawScene {
         updateInfoLabel();
     }
 
+    // Aktualizace textu
     private void updateInfoLabel() {
         infoLabel.setText(String.format(""" 
-            Modrá koule - Hmotnost: %.1f kg, Rychlost: %.1f m/s
-            Červená koule - Hmotnost: %.1f kg, Rychlost: %.1f m/s
-            Srážka: %s
-            Tření: %s (%.2f)
-            Koeficient odrazu: %.2f
-            Kinetická energie před srážkou: %.2f J
-            Kinetická energie po srážce: %.2f J""",
+                        Modrá koule - Hmotnost: %.1f kg, Rychlost: %.1f m/s
+                        Červená koule - Hmotnost: %.1f kg, Rychlost: %.1f m/s
+                        Srážka: %s
+                        Tření: %s (%.2f)
+                        Koeficient odrazu: %.2f
+                        Kinetická energie před srážkou: %.2f J
+                        Kinetická energie po srážce: %.2f J""",
                 m1, v1, m2, v2, isElastic ? "Elastická" : "Neelastická", isFrictionEnabled ? "Zapnuto" : "Vypnuto", friction,
                 restitutionCoefficient, totalKineticEnergyBefore, totalKineticEnergyAfter));
     }
 }
-
-
