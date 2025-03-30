@@ -13,35 +13,40 @@ import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 public class SecondLawTheory {
 
+    //Metoda pro zobrazení okna
     public void show(Stage stage) {
 
         VBox layout = new VBox(20);
         layout.setAlignment(Pos.CENTER);
         layout.setStyle("-fx-padding: 20;");
 
-
+        // Vytvoření pozadí
         LinearGradient gradient = new LinearGradient(0, 0, 1, 0, true, null,
                 new Stop(0, Color.LIGHTPINK),
                 new Stop(1, Color.DEEPPINK));
         layout.setBackground(new Background(new BackgroundFill(gradient, CornerRadii.EMPTY, null)));
 
-
         Text title = new Text("Druhý Newtonův Zákon");
         title.setFont(Font.font("Arial", 36));
         title.setFill(Color.WHITE);
         title.setEffect(new DropShadow(10, Color.BLACK));
+        title.setTextAlignment(TextAlignment.CENTER);
 
-
-        Text explanation = new Text("Zrychlení tělesa je přímo úměrné výsledné síle působící na těleso" +
-                " a nepřímo úměrné jeho hmotnosti, což lze vyjádřit vztahem F = ma.");
-        explanation.setFont(Font.font("Arial", 16));
+        // Popis teorie druhého Newtonova zákona
+        Text explanation = new Text("Zrychlení tělesa je přímo úměrné výsledné síle působící na těleso"
+                + " a nepřímo úměrné jeho hmotnosti, což lze vyjádřit vztahem F = ma.");
+        explanation.setFont(Font.font("Verdana", 18));
         explanation.setFill(Color.WHITE);
+        explanation.setTextAlignment(TextAlignment.CENTER);
+        explanation.setWrappingWidth(700);
+        explanation.setLineSpacing(5);
 
-
+        // Vytvoření tlačítek
         Button examplesButton = createStyledButton("Příklady");
         Button simulationButton = createStyledButton("Simulace");
         Button backButton = createStyledButton("Zpět");
@@ -49,29 +54,26 @@ public class SecondLawTheory {
 
         simulationButton.setOnAction(e -> new SecondLawScene().show(stage));
 
-
-        examplesButton.setOnAction(e -> new MainMenuApp().start(stage));
-
+        examplesButton.setOnAction(e -> new SecondLawExamples().show(stage));
 
         graphButton.setOnAction(e -> new SecondLawGraf().showWindow());
 
-
         backButton.setOnAction(e -> new MainMenuApp().start(stage));
 
-
+        // Přidání všech prvků do rozložení
         layout.getChildren().addAll(title, explanation, examplesButton, simulationButton, graphButton, backButton);
-
 
         Scene scene = new Scene(layout, 800, 600);
 
-
+        // Vytvoření scény a nastavení okna
         stage.setTitle("Newton's Laws - Druhý Zákon");
         stage.setScene(scene);
         stage.setResizable(false);
+        stage.centerOnScreen();
         stage.show();
     }
 
-
+    //Metoda pro vytvoření tlačítka
     Button createStyledButton(String text) {
         Button button = new Button(text);
         button.setFont(Font.font("Arial", 16));
@@ -82,3 +84,4 @@ public class SecondLawTheory {
         return button;
     }
 }
+
