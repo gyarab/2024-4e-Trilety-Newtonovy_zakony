@@ -12,12 +12,14 @@ import java.util.Map;
 
 public class ThirdLawExamples {
 
+    // Mapy obsahující příklady a správné odpovědi
     private final Map<String, String[]> examples = new HashMap<>();
     private final Map<String, String> correctAnswers = new HashMap<>();
 
     private Label exampleLabel, feedbackLabel, solutionLabel;
     private ComboBox<String> answerSelector, exampleSelector;
 
+    //Konstruktor naplňující seznamy příkladů a správných odpovědí
     public ThirdLawExamples() {
         examples.put("Pohyb auta a zdi", new String[]{
                 "Co se stane, když auto narazí do zdi?",
@@ -44,6 +46,7 @@ public class ThirdLawExamples {
         correctAnswers.put("Gravitace a planeta", "Země působí na Měsíc stejnou silou, jakou Měsíc působí na Zemi");
     }
 
+    //  Zobrazení scény s výběrem příkladů
     public void show(Stage stage) {
         Label titleLabel = new Label("⚡ Třetí Newtonův zákon ⚡");
         titleLabel.setStyle("-fx-font-size: 36px; -fx-font-weight: bold; -fx-text-fill: #ffffff;");
@@ -80,16 +83,19 @@ public class ThirdLawExamples {
         Button backButton = new Button("🔙 Zpět");
         backButton.setOnAction(e -> new ThirdLawTheory().show(stage));
 
+        // Hlavní rozložení scény
         VBox layout = new VBox(20, titleLabel, theoryLabel, exampleSelector, exampleLabel, answerSelector,
                 checkAnswerButton, feedbackLabel, solutionLabel, backButton);
         layout.setAlignment(Pos.CENTER);
         layout.setStyle("-fx-padding: 30px; -fx-background-color: linear-gradient(to bottom, #8A2BE2, #4A90E2);");
 
+        // Vytvoření scény
         Scene scene = new Scene(layout, 900, 600);
         scene.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ESCAPE) new MainMenuApp().start(stage);
         });
 
+        // Nastavení okna
         stage.setTitle("Třetí Newtonův zákon");
         stage.setScene(scene);
         stage.setResizable(false);
@@ -97,6 +103,7 @@ public class ThirdLawExamples {
         stage.show();
     }
 
+    //  Načte vybraný příklad
     private void loadExample() {
         String selectedExample = exampleSelector.getValue();
         if (selectedExample != null && examples.containsKey(selectedExample)) {
@@ -109,6 +116,7 @@ public class ThirdLawExamples {
         }
     }
 
+    //Zkontroluje odpověď
     private void checkAnswer() {
         String selectedExample = exampleSelector.getValue();
         String userAnswer = answerSelector.getValue();
@@ -130,3 +138,4 @@ public class ThirdLawExamples {
         solutionLabel.setText("Správná odpověď: " + correctAnswer);
     }
 }
+
