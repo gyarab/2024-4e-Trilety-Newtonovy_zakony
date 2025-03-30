@@ -12,12 +12,14 @@ import java.util.Map;
 
 public class SecondLawExamples {
 
+    // Mapy pro ukládání příkladů a správných odpovědí
     private final Map<String, String[]> examples = new HashMap<>();
     private final Map<String, String> correctAnswers = new HashMap<>();
 
     private Label exampleLabel, feedbackLabel, solutionLabel;
     private ComboBox<String> answerSelector, exampleSelector;
 
+    // Inicializace příkladů a odpovědí
     public SecondLawExamples() {
         examples.put("Auto a síla", new String[]{
                 "Jak se změní zrychlení auta, pokud se síla zdvojnásobí a hmotnost zůstane stejná?",
@@ -38,6 +40,7 @@ public class SecondLawExamples {
         correctAnswers.put("Kámen a gravitace", "9,8 m/s²");
     }
 
+    // Metoda pro zobrazení okna s příklady
     public void show(Stage stage) {
         Label titleLabel = new Label("⚡ Druhý Newtonův zákon ⚡");
         titleLabel.setStyle("-fx-font-size: 36px; -fx-font-weight: bold; -fx-text-fill: #ffffff;");
@@ -84,6 +87,7 @@ public class SecondLawExamples {
             if (e.getCode() == KeyCode.ESCAPE) new MainMenuApp().start(stage);
         });
 
+        // Nastavení okna
         stage.setTitle("Druhý Newtonův zákon");
         stage.setScene(scene);
         stage.setResizable(false);
@@ -91,6 +95,7 @@ public class SecondLawExamples {
         stage.show();
     }
 
+    // Metoda pro načtení vybraného příkladu
     private void loadExample() {
         String selectedExample = exampleSelector.getValue();
         if (selectedExample != null && examples.containsKey(selectedExample)) {
@@ -103,6 +108,7 @@ public class SecondLawExamples {
         }
     }
 
+    // Metoda pro kontrolu odpovědi
     private void checkAnswer() {
         String selectedExample = exampleSelector.getValue();
         String userAnswer = answerSelector.getValue();
@@ -114,6 +120,7 @@ public class SecondLawExamples {
             return;
         }
 
+        // Ověření správnosti odpovědi
         if (userAnswer.equals(correctAnswer)) {
             feedbackLabel.setText("🎉 Správně!");
             feedbackLabel.setStyle("-fx-text-fill: green;");
@@ -124,3 +131,4 @@ public class SecondLawExamples {
         solutionLabel.setText("Správná odpověď: " + correctAnswer);
     }
 }
+
