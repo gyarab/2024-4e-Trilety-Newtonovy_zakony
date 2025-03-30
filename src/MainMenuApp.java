@@ -25,11 +25,13 @@ public class MainMenuApp extends Application {
         showWindow();
     }
 
+    // Metoda pro vytvoření a zobrazení hlavního menu
     public void showWindow() {
         VBox menu = new VBox(20);
         menu.setAlignment(Pos.CENTER);
         menu.setStyle("-fx-padding: 20;");
 
+        // Barevný přechod pozadí
         LinearGradient gradient = new LinearGradient(0, 0, 0, 1, true, null,
                 new Stop(0, Color.LIGHTBLUE),
                 new Stop(1, Color.DARKBLUE));
@@ -51,6 +53,7 @@ public class MainMenuApp extends Application {
 
         menu.getChildren().addAll(title, firstLawButton, secondLawButton, thirdLawButton);
 
+        // Vytvoření hlavní scény s danou velikostí
         Scene mainMenuScene = new Scene(menu, 800, 600);
         primaryStage.setScene(mainMenuScene);
         primaryStage.setTitle("Newtonovy zákony");
@@ -58,7 +61,7 @@ public class MainMenuApp extends Application {
         primaryStage.centerOnScreen();
         primaryStage.show();
     }
-
+    // Metoda pro vytvoření  tlačítka
     Button createStyledButton(String text) {
         Button button = new Button(text);
         button.setFont(Font.font("Arial", 16));
@@ -69,6 +72,7 @@ public class MainMenuApp extends Application {
         return button;
     }
 
+    // Spuštění aplikace
     public static void main(String[] args) {
         launch(args);
     }
