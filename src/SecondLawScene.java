@@ -22,6 +22,7 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 public class SecondLawScene {
+    // Konstanty pro rozměry scény a simulaci
     private static final double RADIUS = 20;
     private static final double START_X = 50;
     private static final double START_Y = 200;
@@ -29,6 +30,7 @@ public class SecondLawScene {
     private static final double HEIGHT = 650;
     private static final double SCALE_FACTOR = 10;
 
+    // proměnné
     private double mass = 2.0;
     private double force = 4.0;
     private double velocity = 0;
@@ -41,18 +43,22 @@ public class SecondLawScene {
     private Line forceVector;
     private Label forceLabel;
 
+    // Metoda zobrazí simulaci
     public void show(Stage stage) {
         Pane simulationPane = new Pane();
 
+        // Vytvoření pozadí
         Rectangle background = new Rectangle(0, 0, WIDTH, HEIGHT);
         background.setFill(new LinearGradient(0, 0, 1, 1, true, CycleMethod.NO_CYCLE,
                 new Stop(0, Color.LIGHTBLUE), new Stop(1, Color.POWDERBLUE)));
 
+        // Kulička reprezentující pohybující se objekt
         Circle ball = new Circle(RADIUS, Color.RED);
         ball.setCenterX(position);
         ball.setCenterY(START_Y);
         ball.setEffect(new javafx.scene.effect.DropShadow(10, Color.BLACK));
 
+        // Šipka zobrazující sílu
         forceVector = new Line(position, START_Y, position, START_Y); // Počáteční pozice šipky (0 délka)
         forceVector.setStrokeWidth(3);
         forceVector.setStroke(Color.YELLOW);
@@ -65,27 +71,28 @@ public class SecondLawScene {
 
         simulationPane.getChildren().addAll(background, ball, forceVector, forceLabel);
 
-
+        // Popisky pro zobrazování hodnot
         Label velocityLabel = createLabel("Rychlost: 0.0 m/s");
         Label accelerationLabel = createLabel("Zrychlení: 0.0 m/s²");
         Label timeLabel = createLabel("Čas: 0.0 s");
         Label massValueLabel = createLabel("Hmotnost: 20.0 kg");
         Label forceValueLabel = createLabel("Síla: 4.0 N");
 
-
+        // Slider
         Slider massSlider = createSlider(0.1, 100, 20);
         massSlider.valueProperty().addListener((obs, oldVal, newVal) -> {
             mass = newVal.doubleValue();
             massValueLabel.setText(String.format("Hmotnost: %.1f kg", mass));
         });
 
+        // Slider
         Slider forceSlider = createSlider(0, 200, 4);
         forceSlider.valueProperty().addListener((obs, oldVal, newVal) -> {
             force = newVal.doubleValue();
             forceValueLabel.setText(String.format("Síla: %.1f N", force));
         });
 
-
+        // Tlačítka pro ovládání simulace
         Button startButton = createButton("Začít simulaci");
         Button resetButton = createButton("Resetovat");
         resetButton.setVisible(false);
@@ -128,12 +135,14 @@ public class SecondLawScene {
         Button backButton = createButton("Zpět");
         backButton.setOnAction(e -> new SecondLawTheory().show(stage));
 
+        // Graf pro zobrazení rychlosti
         LineChart<Number, Number> velocityChart = createChart();
         velocitySeries = new XYChart.Series<>();
         velocityChart.getData().add(velocitySeries);
         velocityChart.setLayoutX(50);
         velocityChart.setLayoutY(450);
 
+        // Rozložení ovládacích prvků
         VBox controls = new VBox(15,
                 new Label("Hmotnost (kg):"),
                 massSlider,
@@ -149,6 +158,7 @@ public class SecondLawScene {
         Pane root = new Pane();
         root.getChildren().addAll(simulationPane, controls, velocityChart);
 
+        // Nastavení a zobrazení scény
         Scene scene = new Scene(root, WIDTH, HEIGHT);
         stage.setTitle("2.Newtonův zákon");
         stage.setScene(scene);
@@ -156,6 +166,7 @@ public class SecondLawScene {
         stage.centerOnScreen();
         stage.show();
 
+        // Animace simulace
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -165,7 +176,7 @@ public class SecondLawScene {
                     return;
                 }
 
-                double deltaTime = (now - lastTime) / 1_000_000_000.0;
+                double deltaTime = (now - lastTime) / 1_000_000000.0;
                 double acceleration = force / mass;
                 velocity += acceleration * deltaTime;
                 position += velocity * deltaTime * SCALE_FACTOR;
@@ -225,6 +236,7 @@ public class SecondLawScene {
         return button;
     }
 
+    //  Metoda pro vytvoření čárového grafu pro vizualizaci rychlosti v čase
     private LineChart<Number, Number> createChart() {
         NumberAxis xAxis = new NumberAxis();
         xAxis.setLabel("Čas (s)");
@@ -239,4 +251,3 @@ public class SecondLawScene {
         return lineChart;
     }
 }
-
